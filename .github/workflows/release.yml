@@ -7,18 +7,24 @@ on:
 
 jobs:
   release:
+    name: Create Release
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v6.0.3
+
+      - name: Create build folder
+        run: mkdir -p dist
 
       - name: Build release package
         run: |
-          tar -czf release.tar.gz .
+          echo "Creating release package..."
+          tar -czf dist/release-${{ github.ref_name }}.tar.gz .
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
-          files: release.tar.gz
+          files: dist/release-${{ github.ref_name }}.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
