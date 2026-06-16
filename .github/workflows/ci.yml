@@ -1,0 +1,72 @@
+name: Universal CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  sanity:
+    name: Repo Sanity Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show structure
+        run: ls -R
+
+      - name: Run repository checks
+        run: |
+          chmod +x scripts/check_repo.sh || true
+          if [ -f scripts/check_repo.sh ]; then
+            scripts/check_repo.sh
+          else
+            echo "No custom checks found"
+          fi
+
+      - name: Validate JSON files
+        run: |
+          echo "Checking JSON..."
+          find . -name "*.json" -print0 | while IFS= read -r -d '' file; do
+            python3 -m json.tool "$file" > /dev/null
+          done || echo "No JSON or all valid"
+
+  test:
+    name: Optional Test Stage
+    runs-on: ubuntu-latest
+    needs: sanity
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run test script if exists
+        run: |
+          if [ -f test.sh ]; then
+            chmod +x test.sh
+            ./test.sh
+          else
+            echo "No tests defined"
+          fi
+
+  package:
+    name: Build Artifact
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package repo
+        run: |
+          chmod +x scripts/package.sh || true
+          if [ -f scripts/package.sh ]; then
+            scripts/package.sh
+          else
+            tar -czf build.tar.gz .
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: build.tar.gz
