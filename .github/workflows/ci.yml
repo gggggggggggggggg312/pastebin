@@ -10,16 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Show files
+      - name: Show repository structure
         run: ls -R
 
-      - name: Basic repo checks
+      - name: Check for .github folder
         run: |
           echo "Checking repo..."
-          test -d .github || echo "No CI config folder"
-          find . -type f -name "*.tmp" && exit 1 || echo "No temp files"
+          if [ -d ".github" ]; then
+            echo "✅ CI config folder exists"
+          else
+            echo "⚠️ No CI config folder"
+          fi
+
+      - name: Check for temp files (SAFE VERSION)
+        run: |
+          echo "Checking for temp files..."
+          count=$(find . -type f -name "*.tmp" | wc -l)
+
+          if [ "$count" -gt 0 ]; then
+            echo "❌ Found $count temp file(s)"
+            exit 1
+          else
+            echo "✅ No temp files"
+          fi
 
   test:
     name: Test Stage
@@ -27,22 +43,16 @@ jobs:
     needs: sanity
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      # small improvement: caching placeholder (works even if no deps exist)
-      - name: Cache workspace
-        uses: actions/cache@v4
-        with:
-          path: .cache
-          key: ${{ runner.os }}-cache-${{ github.sha }}
-
-      - name: Run tests if available
+      - name: Run test script if exists
         run: |
           if [ -f test.sh ]; then
             chmod +x test.sh
             ./test.sh
           else
-            echo "No tests found"
+            echo "ℹ️ No test.sh found, skipping tests"
           fi
 
   package:
@@ -51,7 +61,8 @@ jobs:
     needs: test
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Create build package
         run: |
@@ -62,5 +73,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build
+          name: build-${{ github.sha }}
           path: dist/
