@@ -1,4 +1,5 @@
 let level = 0;
+let iteration = 1;
 let progress = 0;
 
 const numberElement = document.getElementById("number");
@@ -7,37 +8,52 @@ const progressBar = document.getElementById("progress_bar");
 const progressText = document.getElementById("progress_text");
 const advanceButton = document.getElementById("advance");
 
-function fgh(level, n) {
-    if (level === 0) {
-        return n + 1;
-    }
+const MAX_ITERATIONS = 10;
 
-    if (level === 1) {
-        return 2 * n;
-    }
-
-    if (level === 2) {
-        return n * 2 ** n;
-    }
-
-    return null;
+function subscript(number) {
+    const digits = "₀₁₂₃₄₅₆₇₈₉";
+    return String(number)
+        .split("")
+        .map(digit => digits[Number(digit)])
+        .join("");
 }
 
-function formatFGH(level) {
-    return `f₍${level}₎(10)`;
+function superscript(number) {
+    const digits = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+    return String(number)
+        .split("")
+        .map(digit => digits[Number(digit)])
+        .join("");
+}
+
+function formatTerm(level, iteration = 1) {
+    const f = `f${subscript(level)}`;
+
+    if (iteration === 1) {
+        return `${f}(10)`;
+    }
+
+    return `${f}${superscript(iteration)}(10)`;
+}
+
+function getCurrentTerm() {
+    return formatTerm(level, iteration);
+}
+
+function getNextTerm() {
+    if (iteration < MAX_ITERATIONS) {
+        return formatTerm(level, iteration + 1);
+    }
+
+    return formatTerm(level + 1, 1);
 }
 
 function update() {
-    numberElement.textContent = formatFGH(level);
-    nextElement.textContent = formatFGH(level + 1);
+    numberElement.textContent = getCurrentTerm();
+    nextElement.textContent = getNextTerm();
 
     progressBar.style.width = `${progress}%`;
     progressText.textContent = `${progress.toFixed(2)}%`;
-
-    if (level >= 2) {
-        advanceButton.disabled = true;
-        nextElement.textContent = "f₃(10)";
-    }
 }
 
 advanceButton.addEventListener("click", () => {
@@ -45,10 +61,16 @@ advanceButton.addEventListener("click", () => {
 
     if (progress >= 100) {
         progress = 0;
-        level++;
+
+        if (iteration < MAX_ITERATIONS) {
+            iteration++;
+        } else {
+            iteration = 1;
+            level++;
+        }
     }
 
     update();
 });
 
-update();sc
+update();
