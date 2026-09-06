@@ -1,4 +1,3 @@
-```javascript
 let level = 0;
 let iteration = 1;
 let progress = 0;
@@ -52,8 +51,6 @@ function getNextTerm() {
         return "∞";
     }
 
-    // The 10th iteration becomes the next FGH level.
-    // Therefore there is no separate fₙ¹⁰(10) -> fₙ₊₁(10) click.
     if (iteration < 9) {
         return formatTerm(level, iteration + 1);
     }
@@ -62,7 +59,6 @@ function getNextTerm() {
         return formatTerm(level + 1, 1);
     }
 
-    // f₉¹⁰(10) = f₁₀(10) = fω(10) in this game.
     return "fω(10)";
 }
 
@@ -93,7 +89,6 @@ advanceButton.addEventListener("click", () => {
         if (iteration < 9) {
             iteration++;
         } else if (level < MAX_FINITE_LEVEL) {
-            // Advance directly to the next FGH level.
             level++;
             iteration = 1;
         } else {
@@ -109,4 +104,3 @@ advanceButton.addEventListener("click", () => {
 });
 
 update();
-```
