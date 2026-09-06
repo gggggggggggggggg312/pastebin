@@ -1,26 +1,48 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
+    min-height: 100vh;
     font-family: Arial, sans-serif;
-    text-align: center;
-    background: #111;
-    color: white;
+    background: #0b0e14;
+    color: #f1f5f9;
 }
 
 main {
-    max-width: 700px;
-    margin: 80px auto;
-    padding: 20px;
+    width: min(900px, 92%);
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+h1 {
+    margin: 0 0 35px;
+    text-align: center;
+    font-size: 42px;
 }
 
 #number {
-    font-size: 40px;
-    margin: 40px 0 20px;
+    padding: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 42px;
+    font-weight: bold;
+    background: #151a24;
+    border: 1px solid #2a3242;
+    border-radius: 14px;
+    overflow-x: auto;
+}
+
+.progress-container {
+    margin-bottom: 10px;
 }
 
 .progress {
     width: 100%;
-    height: 30px;
-    background: #333;
+    height: 28px;
+    background: #202631;
+    border: 1px solid #343d4d;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -28,11 +50,121 @@ main {
 #progress_bar {
     width: 0%;
     height: 100%;
-    background: #6cf;
+    background: #5ac8fa;
+    transition: width 0.15s ease;
 }
 
-button {
-    padding: 10px 20px;
+#progress_text {
+    margin: 8px 0 25px;
+    text-align: right;
+    color: #aeb8c7;
+}
+
+.next {
+    margin: 20px 0;
+    padding: 16px;
+    text-align: center;
+    background: #11161f;
+    border: 1px solid #252d3a;
+    border-radius: 10px;
     font-size: 18px;
+}
+
+#next {
+    font-weight: bold;
+}
+
+#advance {
+    display: block;
+    width: 100%;
+    margin: 20px 0 35px;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    background: #5ac8fa;
+    color: #071018;
+    font-size: 20px;
+    font-weight: bold;
     cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+#advance:hover {
+    opacity: 0.9;
+}
+
+#advance:active {
+    transform: scale(0.98);
+}
+
+#advance:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.upgrades {
+    margin-top: 20px;
+}
+
+.upgrades h2 {
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+.upgrade {
+    padding: 22px;
+    background: #151a24;
+    border: 1px solid #2a3242;
+    border-radius: 14px;
+}
+
+.upgrade h3 {
+    margin: 0 0 10px;
+    font-size: 22px;
+}
+
+.upgrade p {
+    margin: 8px 0;
+    color: #aeb8c7;
+}
+
+.upgrade span {
+    color: #f1f5f9;
+    font-weight: bold;
+}
+
+#buy_click_power {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    border: 1px solid #3b4658;
+    border-radius: 8px;
+    background: #202735;
+    color: #f1f5f9;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#buy_click_power:hover {
+    background: #293243;
+}
+
+#buy_click_power:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    main {
+        padding: 30px 0;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    #number {
+        font-size: 30px;
+    }
 }
