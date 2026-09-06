@@ -1,7 +1,10 @@
 let level = 0;
 let iteration = 1;
 let progress = 0;
+
+let points = 0;
 let clickPower = 1;
+let clickPowerCost = 10;
 
 const MAX_FINITE_LEVEL = 9;
 
@@ -10,6 +13,10 @@ const nextElement = document.getElementById("next");
 const progressBar = document.getElementById("progress_bar");
 const progressText = document.getElementById("progress_text");
 const advanceButton = document.getElementById("advance");
+
+const clickPowerElement = document.getElementById("click_power");
+const clickPowerCostElement = document.getElementById("click_power_cost");
+const buyClickPowerButton = document.getElementById("buy_click_power");
 
 const subscriptDigits = "₀₁₂₃₄₅₆₇₈₉";
 const superscriptDigits = "⁰¹²³⁴⁵⁶⁷⁸⁹";
@@ -67,13 +74,22 @@ function update() {
     nextElement.textContent = getNextTerm();
 
     progressBar.style.width = `${progress}%`;
-    progressText.textContent = `${progress.toFixed(2)}%`;
+    progressText.textContent = `${progress.toFixed(0)}%`;
+
+    clickPowerElement.textContent = clickPower;
+    clickPowerCostElement.textContent = clickPowerCost;
 
     if (level === "ω") {
         progressBar.style.width = "100%";
         progressText.textContent = "Complete";
+
         advanceButton.disabled = true;
+        buyClickPowerButton.disabled = true;
+        return;
     }
+
+    advanceButton.disabled = false;
+    buyClickPowerButton.disabled = points < clickPowerCost;
 }
 
 advanceButton.addEventListener("click", () => {
@@ -81,6 +97,10 @@ advanceButton.addEventListener("click", () => {
         return;
     }
 
+    // Gain points whenever you advance.
+    points += clickPower;
+
+    // Advance the current progression.
     progress += clickPower;
 
     while (progress >= 100) {
@@ -89,6 +109,7 @@ advanceButton.addEventListener("click", () => {
         if (iteration < 9) {
             iteration++;
         } else if (level < MAX_FINITE_LEVEL) {
+            // fₙ¹⁰(10) becomes fₙ₊₁(10)
             level++;
             iteration = 1;
         } else {
@@ -99,6 +120,19 @@ advanceButton.addEventListener("click", () => {
             break;
         }
     }
+
+    update();
+});
+
+buyClickPowerButton.addEventListener("click", () => {
+    if (points < clickPowerCost) {
+        return;
+    }
+
+    points -= clickPowerCost;
+
+    clickPower++;
+    clickPowerCost *= 2;
 
     update();
 });
