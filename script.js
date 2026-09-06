@@ -14,7 +14,9 @@ const progressBar = document.getElementById("progress_bar");
 const progressText = document.getElementById("progress_text");
 const advanceButton = document.getElementById("advance");
 
+const pointsElement = document.getElementById("points");
 const clickPowerElement = document.getElementById("click_power");
+const clickPowerLevelElement = document.getElementById("click_power_level");
 const clickPowerCostElement = document.getElementById("click_power_cost");
 const buyClickPowerButton = document.getElementById("buy_click_power");
 
@@ -49,10 +51,6 @@ function formatTerm(level, iteration = 1) {
     return `${f}${superscript(iteration)}(10)`;
 }
 
-function getCurrentTerm() {
-    return formatTerm(level, iteration);
-}
-
 function getNextTerm() {
     if (level === "ω") {
         return "∞";
@@ -70,14 +68,18 @@ function getNextTerm() {
 }
 
 function update() {
-    numberElement.textContent = getCurrentTerm();
+    numberElement.textContent = formatTerm(level, iteration);
     nextElement.textContent = getNextTerm();
 
     progressBar.style.width = `${progress}%`;
-    progressText.textContent = `${progress.toFixed(0)}%`;
+    progressText.textContent = `${Math.floor(progress)}%`;
 
+    pointsElement.textContent = points;
     clickPowerElement.textContent = clickPower;
+    clickPowerLevelElement.textContent = clickPower;
     clickPowerCostElement.textContent = clickPowerCost;
+
+    buyClickPowerButton.disabled = points < clickPowerCost;
 
     if (level === "ω") {
         progressBar.style.width = "100%";
@@ -85,11 +87,7 @@ function update() {
 
         advanceButton.disabled = true;
         buyClickPowerButton.disabled = true;
-        return;
     }
-
-    advanceButton.disabled = false;
-    buyClickPowerButton.disabled = points < clickPowerCost;
 }
 
 advanceButton.addEventListener("click", () => {
@@ -97,10 +95,10 @@ advanceButton.addEventListener("click", () => {
         return;
     }
 
-    // Gain points whenever you advance.
+    // Gain points.
     points += clickPower;
 
-    // Advance the current progression.
+    // Advance progress.
     progress += clickPower;
 
     while (progress >= 100) {
@@ -109,11 +107,11 @@ advanceButton.addEventListener("click", () => {
         if (iteration < 9) {
             iteration++;
         } else if (level < MAX_FINITE_LEVEL) {
-            // fₙ¹⁰(10) becomes fₙ₊₁(10)
+            // fₙ⁹ -> fₙ₊₁
             level++;
             iteration = 1;
         } else {
-            // f₉¹⁰(10) = f₁₀(10) = fω(10)
+            // f₉⁹ -> fω
             level = "ω";
             iteration = 1;
             progress = 0;
