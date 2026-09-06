@@ -11,6 +11,18 @@
     <main>
         <h1>FGH LNGI</h1>
 
+        <div class="stats">
+            <div class="stat">
+                <span>Points</span>
+                <strong id="points">0</strong>
+            </div>
+
+            <div class="stat">
+                <span>Click Power</span>
+                <strong id="click_power">1</strong>
+            </div>
+        </div>
+
         <div id="number">f₀(10)</div>
 
         <div class="progress">
@@ -19,7 +31,9 @@
 
         <p id="progress_text">0%</p>
 
-        <p>Next: <span id="next">f₀²(10)</span></p>
+        <div class="next">
+            Next: <span id="next">f₀²(10)</span>
+        </div>
 
         <button id="advance">Advance</button>
 
@@ -27,9 +41,13 @@
             <h2>Upgrades</h2>
 
             <div class="upgrade">
-                <h3>Click Power</h3>
-                <p>Power: <span id="click_power">1</span></p>
-                <p>Cost: <span id="click_power_cost">10</span></p>
+                <div>
+                    <h3>Click Power</h3>
+                    <p>Increase progress gained per click.</p>
+                    <p>Level: <strong id="click_power_level">1</strong></p>
+                    <p>Cost: <strong id="click_power_cost">10</strong> points</p>
+                </div>
+
                 <button id="buy_click_power">Upgrade</button>
             </div>
         </section>
