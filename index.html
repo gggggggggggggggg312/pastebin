@@ -3,25 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>FGH LNGI</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <main>
+
         <h1>FGH LNGI</h1>
-
-        <div class="stats">
-            <div class="stat">
-                <span>Points</span>
-                <strong id="points">0</strong>
-            </div>
-
-            <div class="stat">
-                <span>Click Power</span>
-                <strong id="click_power">1</strong>
-            </div>
-        </div>
 
         <div id="number">f₀(10)</div>
 
@@ -35,24 +27,91 @@
             Next: <span id="next">f₀²(10)</span>
         </div>
 
+        <div class="stats">
+
+            <div class="stat">
+                <span class="stat-label">Points</span>
+                <span id="points">0</span>
+            </div>
+
+        </div>
+
         <button id="advance">Advance</button>
 
         <section class="upgrades">
+
             <h2>Upgrades</h2>
 
             <div class="upgrade">
-                <div>
-                    <h3>Click Power</h3>
-                    <p>Increase progress gained per click.</p>
-                    <p>Level: <strong id="click_power_level">1</strong></p>
-                    <p>Cost: <strong id="click_power_cost">10</strong> points</p>
-                </div>
 
-                <button id="buy_click_power">Upgrade</button>
+                <h3>Click Power</h3>
+
+                <p>
+                    Points per click:
+                    <span id="click_power">1</span>
+                </p>
+
+                <p>
+                    Progress per click:
+                    <span id="click_progress">5</span>%
+                </p>
+
+                <p>
+                    Cost:
+                    <span id="click_power_cost">10</span>
+                </p>
+
+                <button id="buy_click_power">
+                    Upgrade
+                </button>
+
             </div>
+
+            <div class="upgrade">
+
+                <h3>Progress Power</h3>
+
+                <p>
+                    Progress multiplier:
+                    <span id="progress_power">1</span>x
+                </p>
+
+                <p>
+                    Cost:
+                    <span id="progress_power_cost">25</span>
+                </p>
+
+                <button id="buy_progress_power">
+                    Upgrade
+                </button>
+
+            </div>
+
+            <div class="upgrade">
+
+                <h3>Auto Advance</h3>
+
+                <p>
+                    Automatic advances:
+                    <span id="auto_advance">0</span>/second
+                </p>
+
+                <p>
+                    Cost:
+                    <span id="auto_advance_cost">100</span>
+                </p>
+
+                <button id="buy_auto_advance">
+                    Upgrade
+                </button>
+
+            </div>
+
         </section>
+
     </main>
 
     <script src="script.js"></script>
+
 </body>
 </html>
