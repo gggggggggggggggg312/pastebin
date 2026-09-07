@@ -1,3 +1,13 @@
 # some random lngi game
 
-Description SOON
+This is a placeholder.
+
+FILES: 
+
+## placeholder1
+
+## Placeholder 2
+
+#### Hi
+
+test
